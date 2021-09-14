@@ -63,6 +63,7 @@ var CLI struct {
 	Kubernetes struct {
 		MetricsAddr   string `default:":8080" help:"The address the metric endpoint binds to."`
 		ConfigMapMode bool   `default:"false" help:"If the generated recording rules should instead be saved to config maps in the default Prometheus format."`
+		Namespace     string `default:"" help:"Read ServiceLevelObjective from specific namespace only"`
 	} `cmd:"" help:"Runs Pyrra's Kubernetes operator and backend for the API."`
 }
 
@@ -123,7 +124,7 @@ func main() {
 	case "filesystem":
 		code = cmdFilesystem(logger, reg, client, CLI.Filesystem.ConfigFiles, CLI.Filesystem.PrometheusFolder)
 	case "kubernetes":
-		code = cmdKubernetes(logger, CLI.Kubernetes.MetricsAddr, CLI.Kubernetes.ConfigMapMode)
+		code = cmdKubernetes(logger, CLI.Kubernetes.MetricsAddr, CLI.Kubernetes.ConfigMapMode, CLI.Kubernetes.Namespace)
 	}
 	os.Exit(code)
 }
